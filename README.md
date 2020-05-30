@@ -157,3 +157,46 @@ While this sounds like it takes a long time, transactions are confirmed within 0
 This creates a very comparable login experience to that of centralized applications.
 
 As you will see in the next section, every time a user executes an action within dSocial (ex. post, comment, interaction, follow, unfollow) the action must be signed and transmitted to Arisen for not only authentication but for the purpose of storing the data related to the action, so that data can be retrieved at anytime by the dSocial application itself. This means unauthorized actions can never take place on dSocial, which also means hackers have no way of gaining access to accounts or taking part in rogue or illicit activity within the dSocial application itself. This is the advantage of using a blockchain and asymmetric cryptography (public key cryptography) for user authentication.
+
+### Blockchain-Based Application Execution
+The code related to a lot of dSocial's functionality is located on the Arisen blockchain within various smart contracts stored under the [@peeps](https://explorer.arisen.network/accounts/peeps) account. This is due to the fact that some functionality is related to specific [on-chain actions](#on-chain-actions) that require user authentication via PeepsID and the data that derives from these actions must be stored on-chain alongside the account that is executing the action.
+
+When dSocial calls for a specific action to be executed on Arisen, a specific private key related to a specific permission-level is required to sign a transaction that derives these on-chain actions. Just like the login process, this is handled via the PeepsID application, where a user simply verifies a pin code or biometric data, the transaction related to the action is signed, subsequently broadcasted to the Arisen network and the data that derives from the action is stored across all peers on Arisen's network within dSocial's on-chain multi-index database. Data within dSocial's on-chain multi-index database can be retrieved from any Arisen blockchain node, via Arisen's RPC API, at any time. dSocial keeps a constantly updating list of Arisen nodes, so that API requests to these nodes can be properly load balanced for absolute redundancy and for performance purposes as well.
+
+Specific functions within dSocial's application that are executed on the Arisen blockchain, include:
+- Posting
+- Commenting
+- Interacting with a post or comment (reacting to a post, for example, liking a post)
+- Reposting a post
+- Upvoting a post or comment 
+- Messaging a user
+- Favorite posts
+- Pinning a post
+- Following a user or unfollowing a user
+- Blocking a user
+- Updating a profile image or profile header image
+- Hiding a post from public view
+- Deactivating a profile
+
+By using a blockchain like Arisen as a way of carrying out these actions, we're able to insure that:
+a) hackers cannot impersonate users or carry out unauthorized actions.
+b) data associated with these actions is stored immutably across potentially thousands of blockchain nodes across the world (and soon, space...).
+c) dSocial can retrieve data from any of these nodes easily without there being a single point of failure or any bottlenecks.
+d) the code behind specific dSocial features is openly stored on the blockchain, where anyone can see it and where every single executed action can also be seen and verified via the blockchain's ledger. This creates trust amongst the users of dSocial and insures dSocial remains censorship-resistant.
+e) accounts that take part in the distribution of illegal content (pornography) or illegal activity can be frozen and removed from the network by a 15/21 vote of Arisen's elected governance (more on this in [Decentralized Reporting System](#decentralized-reporting-system).
+
+### Blockchain-Based Data Storage
+It was pointed out in the previous section that the data that derives from [on-chain actions](#on-chain-actions) are stored on the blockchain as well. dSocial uses an on-chain multi-index database, which allows dSocial to easily store and retrieve data at anytime, rather than a central database that can be attacked by rogue actors.
+
+Typical data that is stored on-chain, includes:
+- Data related to 140 character posts.
+- Data related to 140 character comments (replies).
+- Every interaction (like, etc.)related to a post_id.
+- Data related to 140 character messages.
+- Data related to an upvote (RIX amount, user upvoting, post_id or comment_id being upvoted).
+- Data related to a favorite post (post_id and the user initiating the [favorite](#favorite) action).
+- Follower data related to a particular account.
+- dWeb-based discovery keys of dDrives that contain a profile image or header image for a particular account (more on this in [Off-Chain Distributed Media Storage](#off-chain-distributed-media-storage).).
+- dWeb-based discovery keys of dDrives, which contain the media (images, videos, audio, etc.) attached to a post (more on this in [Off-Chain Distributed Media Storage](#off-chain-distributed-media-storage).).
+- Data representing the post_id(s) that dSocial should no longer retrieve from the blockchain.
+- Data representing accounts that should be "blacklisted" or "deactivated" and ignored by the dSocial application.
