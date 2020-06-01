@@ -653,3 +653,145 @@ A user is asked to create their first post which creates a [post](#post) action.
 
 ##### The Onboarding Transaction Queue
 All transactions from the onboarding process are concurrently sent to PeepsID, signed in the SKV and sent back to dSocial as signed transactions, where dSocial subsequently broadcasts them to the Arisen network. After broadcast, the user is taken to the home screen.
+
+### Feed
+The ```Feed``` top-level component, also considered as the "home screen" for dSocial, is made up of a large component hierarchy. That component hierarchy is somewhat discussed in the sub-sections that follow, as well as some of dSocial's special functionality found throughout the ```Feed``` component. The dSocial post feed is made up of many instances of [The Post Component](#the-post-component) as well as desktop-based components for [Trending Topics](#trending-topics-component), [Profile Management Component](#profile-management-component), the [Earnings Breakdown Component](#earnings-breakdown-component) and the [New Post Component](#new-post-component). On mobile devices, these components are tabs at the bottom of the screen and available across all feed-based views. A feed only loads 8 posts at a time. To load more posts, the end-user must click the "Show More Posts" button which queries the Arisen blockchain for 8 more posts. Similarly, only 8 comments are loaded on a per-post basis and will only load more when the "Show More Comments" button is clicked , which retrieves 8 more comments for a particular post from the Arisen blockchain.
+
+#### The Post Component
+All posts are displayed in a "card"-like structure ***(See Bootstrap cards)***, within the [Feed](#feed), [Profile Page](#profile-page) and [Search](#search) top-level components. The post component is the same for every post and functions alongside many sub-components, so that feed-based data is consistent across all feed-based components, which of course, consists of a bunch of posts. 
+
+A pseudo-representation of the post component:
+
+```
+===========================================================
+| (Post Account)                                         (Post Time) (Post Menu) |
+|                                                                                                    
+| (Post Content)                                                                                       
+|                                                                                                     
+|
+|
+|
+| (Post State)
+| (Post Footer)
+| (Post Repost) (Post Interaction) (Post Comment) (Post Upvote)        |
+============================================================
+```
+
+##### Post Content Component
+The post content component is responsible for displaying post data and post media for a given post. This data is retrieved from the ```dsocial``` multi-index database on Arisen's network and the media associated with the retrieved dDrive discovery key, is subsequently retrieved from the peers who are distributing it (a dDrive's flock). This component organizes thumbnail-based media in a masonry-style structure under the actual post content.
+
+##### Post Time Component
+The post time component is responsible for retrieving the time related to when the post data was initially created and stored on the Arisen network via Arisen's API and displaying the time with [The Post Component](#the-post-component).
+
+##### Post Account Component
+The post account component is responsible for displaying the profile name, account username and profile image at the top left of [The Post Component](#the-post-component). The profile name, account username and the dDrive discovery key of the profile image are retrieved from Arisen's network and the profile image is retrieved from the dDrive's flock.
+
+##### Post Stats Component
+The post stats component displays the number of:
+- interactions
+- comments
+- reposts
+- upvotes (In RIX)
+
+These statistics are displayed below the [Post Content Component](#post-content-component) within [The Post Component](#the-post-component). All of this data is retrieved via Arisen's network for a given ```post_id```.
+
+##### Post Footer Component
+The post footer component, contains four buttons that each in-turn initiate the display of one of four separate sub-components:
+- Repost - displays the [Post Repost Component](#post-repost-component)
+- Interact - displays the [Post Interaction Component](#post-interaction-component)
+- Comment - displays the [Post Comment Component](#post-comment-component)
+- Upvote - displays the [Post Upvote Component](#post-upvote-component)
+
+Each button also has a ```label``` that displays the amount of reposts, interactions, comments and upvotes (in RIX).
+
+##### Post Menu Component
+A hamburger-style menu at the top right of [The Post Component](#the-post-component) that features the following options:
+- Block User - Initiates the [block](#block) action.
+- Favorite Post - Initiates the [favorite](#favorite) action.
+- Report Post - Displays the [Post Report Component](#post-report-component).
+- Unfollow User - Initiates the [unfollow](#unfollow) action.
+- Message @username - Opens the dMessenger application and starts a new conversation with @username.
+
+##### Post Favorite Component
+The post favorite component is a star icon to the right of the [Post Menu Component](#post-menu-component) that when clicked initiates the [favorite](#favorite) action for a given post.
+
+##### Post Upvote Component
+The post upvote component is a small component that is located within an in-app popup module which allows a user to upvote a specific post with a specific amount of RIX or LIKE tokens. A user must have the upvote amount in their account, as well as the needed permissions to transfer the coins (arisen.token requires the active permission).
+
+The [upvote](#upvote) action first initiates the ```transfer``` action via the ```arisen.token```  contract and then runs the actual [upvote](#upvote) action, if the transfer was successful. The user only has to verify once via PeepsID for both actions, since one notifies the other of a successful execution via the on_notify() function and since both are packaged within a single transaction.
+
+##### Post Interaction Component
+The post interaction component allows a user to "react" to a post using the [interact](#interact) action.
+
+The following reactions are included with dSocial, as emojis:
+- like
+- love
+- hate
+- angry
+- shocked
+- sad
+- excited
+
+All reactions are emoji-based and their counts, along with each emoji icon, are displayed within a post, via the [Post Stats Component](#post-stats-component).
+
+##### Post Comment Component
+The post comment component expands from the bottom of [The Post Component](#the-post-component) and displays all comments ordered by popularity and upvote averages. Each comment, like each post, is an instance of [The Post Component](#the-post-component). This means a user can upvote, interact, comment, repost, favorite and report comments, just as they do with posts.
+
+#####  Post Repost Component
+The post repost component is displayed in a popup module basically asking a user if they really want to repost a specific post. The "Yes, Repost" button within the popup initiates the [repost](#repost) action. dSocial feeds are designed to showcase reposted posts immediately, as if it came from the original user. The only difference between the original post and the reposted version is that [The Post Component](#the-post-component) displays "Reposted by @account" at the top of [The Post Component](#the-post-component).
+
+#### Trending Topics Component
+The trending topics component is designed to display dSocial's trending topics globally by default, but also includes a built-in location search for fetching trending topics by location. dSocial's applications use a local location database to help auto-complete location searches and a [Trending Search Algorithm](#trending-search-algorithm) for determining trending terms and #hashtags on a per-location basis, as well as where they rank in the ```trending graph```.
+
+##### Trending Search Algorithm
+Trending topics are determined on a per-location basis using an algorithm that searches all posts on the network that contain the same #hashtags or a constant string of text and categorically keeps count of each instance on a per-location basis.
+
+For example, if there is a post by two users that use the hashtag #LockHerUp, where one user's profile location is Dallas, TX and the other user's profile is in Oklahoma City, OK then the #hashtag would have the following per-location counts:
+
+```
+Global - 2
+United States - 2
+Texas - 1
+Oklahoma - 1
+Dallas, TX - 1
+Oklahoma City, OK - 1
+```
+
+Notice that since Dallas is in Texas and Oklahoma City is in Oklahoma, the locations of Texas and Oklahoma each have a count of 1 and since both are in the United States, the United States location has a count of 2. The ```Global``` location is the default location for all profiles and its count for a term is incremented for all instances of a term, regardless of location.
+
+Although, the ranking of terms in the top trending terms for a locality is not entirely dependant upon the amount of times terms are mentioned by users in a particular locality. The ```Trending Search Algorithm``` weighs many factors:
+
+- The average time frame between the previous two instances of a term being posted (resets every 30 minutes) [60%]
+- The popularity of users who have posted the term within the last 24 hours [10%]
+- The amount of times the term is found in reposts within the last 24 hours [10%]
+- The total amount of RIX earned by posters of the term within the past two hours [5%]
+- Total number of instances (count) [15%]
+
+A term with the lowest average time frame between multiple posted instances and the highest total amount of upvoted RIX (totaled amongst all posts), will rank higher than a term that is found to have a higher count, with more reposts and more reposts from the network's most popular users. This algorithm insures that terms found to be quickly gathering traction on the network, on a per-location basis, can rank ahead of older terms with a higher post count.
+
+#### Earnings Breakdown Component
+The earnings breakdown component shows a daily and a weekly breakdown of a user's earnings in RIX and LIKE. It also has a button that says "View Wallet" which takes a user to the [Wallet Component](#wallet). On desktop devices the earnings breakdown component is on the left sidebar under the [Account Management Component](#account-management-component) and above the [Trending Topics Component](#trending-topics-component). On mobile devices, it's located in a tab at the bottom of the screen.
+
+#### Latest, Popular and Custom Feed Filter Components
+dSocial by default allows users using the ```Feed``` and ```Search Feed``` views, to organize posts by those posted most recently (latest) and those that have the greatest popularity (popular). Users can also create their own custom filters by selecting a variety  of factors or terms they prefer to see over others. Instead of centralized networks determining what a user sees, users can make that determination for themselves by simply creating custom filters for their dSocial home feed.
+
+#### Account Management Component
+The account management component is found at the top of the left sidebar above the [Earnings Breakdown Component](#earnings-breakdown-component). The account management component shows:
+- profile image
+- profile name
+- @username
+- post, following and follower counts
+- an "Edit Profile" button that links directly to the user's profile
+
+#### New Post Component
+When a user clicks the "New Post" button, a popup module is opened which contains the new post component. The new post component is simply a text box, with a character counter that only allows users to type 140 characters, as well as a media icon for selecting media to be placed within a dDrive. Under the text box, is a button that says "Post", which initiates the [post](#post) action.
+
+#### Post Report Component
+Each post has a "Report Post" link, found within the [Post Menu Component](#post-menu-component) which when clicked, opens a popup module that contains the post report component. The post report component is essentially a form where a user can make a report about a specific post, as explained earlier in this paper in the [Decentralized Reporting System](#decentralized-reporting-system) section.
+
+The form contains the following:
+- (pre-selected post_id or comment_id)
+- (pre-selected @username of who created the post or comment)
+- Report Type (General or Emergency)
+- Report Category (Illegal Pornography or Other Criminal Activity)
+- ([IF] Emergency) Text box for a max 140 character description about why an issue is an emergency.
