@@ -561,3 +561,95 @@ The ```pdata``` action is used to add or modify an account's profile data. The `
 - ```url``` - An external URL. (required - even if empty)
 - ```bio``` - The description for a profile. Limited to 140 characters. (required - even if empty)
 - ```location``` - The location of the profile. (required)
+
+## Application Layout
+This section briefly describes some of the "components" and "views" of the dSocial application. dSocial's application layout is the same (responsive) across all devices so that the user experience is seamless when switching between desktop and mobile devices. dSocial is written in ReactJS and uses React-Native, as well as Electron so that a single code base can be deployed across multiple platforms (Web, MacOS, Windows, Linux, iOS and Android). dSocial is a SPA (single page application) made up of many components that are combined to make up more complex components. These components are explained in the sub-sections that follow.
+
+### Account Creation & Login
+As discussed in [Cross-Platform UAL](#cross-platform-ual), the UAL used by dSocial is the most important element of the application itself. Before an end-user can actually use dSocial, the application itself requires that an end-user downloads the PeepsID app so that the cryptographic keys (for various permission levels, that are generated during both the login and signup processes) are securely stored within the PeepsID application. This insures that all keys that generated during the login and signup processes, are securely stored within the PeepsID app. This also insures that end-users can securely use these keys to sign the transactions related to any of the [on-chain actions](#on-chain-actions) they end up initiating while using dSocial.
+
+#### No-Show Policy (NSP)
+dSocial uses a "no-show policy" (NSP) (not to be confused with network service provider) for private keys, meaning private keys within the dSocial application are never shown to the end-user for any reason. Instead, private keys are managed within PeepsID and securely stored on an offline subnet (similar to an air-gapped environment). 
+
+Here is a pseudo representation of how dSocial and PeepsID use what is known as a "Secure Key Vault" or "SKV":
+```
+Arisen Network  <-syncing->  dSocial  <-PeepsID->  |SKV| <-> Transaction Signing
+```
+
+#### PeepsID-Integrated
+As was explained in previous sections, dSocial is highly integrated with the PeepsID application for user and action authentication. When a user initiates [on-chain actions](#on-chain-actions) via dSocial, dSocial uses the PeepsID application to sign the transaction these actions are neatly packaged within so that an end-user's private keys are never exposed or exploited in any way. This process is the crown jewel of consumer-friendly decentralized applications.
+
+PeepsID is designed to operate on MacOS, Windows, Linux, Google Chrome, iOS and Android.
+
+**NOTE:** ***PeepsID and its UAL will soon be utilized by the world's first decentralized operating system, [PeerOS](https://github.com/peepsx/peeros-whitepaper).***
+
+#### Secure SKV Communications
+PeepsID stores a user's permission-level based cryptographic keys in a [Secure Key Vault](#secure-key-vault) or "SKV" which is located on an offline subnet within the user's device. dSocial and PeepsID use a decentralized messaging protocol known as "dMemo" for inter-process communications between the dSocial and PeepsID applications.  This is for the secure transport of unsigned and signed transactions between the application environment and the SKV. 
+
+**The process for achieving secure transaction signing and transport to and from the SKV is as follows:**
+1. The end-user executes an [on-chain action](#on-chain-actions) (ex. the user creates a new post on dSocial, which executes the [post](#post) action.
+
+2. dSocial packages the action or a set of actions into a single unsigned transaction, using the dMemo protocol, dSocial sends a ```SIGOTC``` (open transaction channel) signal to PeepsID to open a ```transaction channel``` and sends the unsigned transaction to PeepsID, along with the account and the account's permission level.
+
+3. If the account and permission level's keys are managed by PeepsID, PeepsID sends the ```SIGSOK``` (signing is ok) signal and dSocial switches to the PeepsID application where a user is asked to verify a pin number or their static biometrics. The resulting serialized data from this input, along with the unsigned transaction, account and permission levels are sent over a separate dMemo channel to the SKV. 
+
+4. The SKV receives both the serialized input data, the account name and the permission level, along with the unsigned transaction. Before closing the communication channel with PeepsID, the SKV sends the ```SIGDRE``` (data received) signal back to PeepsID and then the ```SIGCLOSE``` (close channel) signal, to signal that it has received the data and is closing the communication channel.
+
+5. The SKV decrypts the required private key related to the given account and associated permission-level via its offline subnet and temporarily stores it in a portion of random-access memory (RAM) that is only accessible by the offline subnet where the SDK operates.
+
+6. The SKV then signs the transaction, serializes it and subsequently removes the exposed private keys from RAM. 
+
+7. The SKV then sends PeepsID the ```SIGOTC``` signal, signaling its intent to open a transaction channel.
+
+8. PeepsID accepts the SKV's request to open a ```transaction channel```. (PeepsID by design always accepts SIGOTC-based requests from the SKV). 
+
+9. PeepsID sends the signed transaction back to dSocial over their open ```transaction channel```. 
+
+10. dSocial broadcasts the transaction to the Arisen network, where the action is executed and data is stored in the ```dsocial``` on-chain database.
+
+11. dSocial sends PeepsID the ```SIGTXBR``` (transaction broadcasted) signal, signaling that the transaction was successfully broadcasted and then sends the ```SIGCLOSE``` signal to close their ```transaction channel```. 
+
+12. dSocial then queries the Arisen network for the new data and it is displayed to the user.
+
+This process takes a matter of 1-2 seconds and the end-user never sees any of these background processes.
+
+**NOTE:** For more on the dMemo protocol, please read the [dMemo Whitepaper](https://github.com/peepsx/dmemo-whitepaper).
+
+#### Initial Login Actions
+When a user initially signs into dSocial for the first time, many on-chain actions are linked together and executed, including:
+- [activate](#activate) - Sets the user's profile activation status to ```true```.
+- [follow](#follow) - Follows the @peeps, @jared and @dsocial profiles.
+- transfer (via the ```arisen.token``` contract) - Sends the new user 1000 LIKE tokens and 10 RIX tokens from the @peeps account, so that the new user can post to dSocial and upvote others immediately.
+- The necessary RAM, CPU and NET resources are reserved on Arisen for the new user so that they can utilize all of dSocial's features.
+
+#### Onboarding
+When a new user successfully signs into dSocial for the first time and the [Initial Login Actions](#initial-login-actions) have taken place, they are taken through an onboarding process.
+
+##### Step 1: Add Profile Data
+The user is asked to enter specific profile information, including the following:
+- Profile Display Name (can be anything and is different than the account username) (required)
+- Profile Description (profile description - limited to 140 characters) (optional)
+- Profile URL (URL to a website or other profile. Also limited to 140 characters) (optional)
+- Profile Location (user types in a city, state or country) (required - even if user selects "Global").
+- Profile Color (user selects an RGB-based hex code from a color wheel for their profile's color scheme.)
+
+This data is used as parameters for the [pdata](#pdata) action. dSocial places this unsigned transaction in a queue so that PeepsID can sign all of the transactions that derive from its onboarding process at once, so that the end-user only has to verify their identity with PeepsID one time.
+
+##### Step 2: Add Profile Image
+The user is asked to choose a profile image and it is replicated on their local computer in the ```dsocial-drives/profileimage/``` folder. dSocial converts the local instance of the folder into a dDrive and announces the dDrive to dWeb's dDNS and DHT networks.
+
+This data is used as a parameter for the [pimage](#pimage) action. dSocial places this unsigned transaction in the ```onboarding transaction queue``` and the onboarding process continues to Step 3.
+
+##### Step 3: Upload Header Image
+Similar to Step 2, the user is asked to choose a header image and it is replicated on their local computer in the ```dsocial-drives/headerimage/``` folder. dSocial converts this local instance of the folder into a dDrive and announces the dDrive to dWeb's dDNS and DHT networks.
+
+This data is used as parameters for the [himage](#himage) action. dSocial places this unsigned transaction in the ```onboarding transaction queue``` and the onboarding process continues to Step 4.
+
+##### Step 4:  Follow Popular Voices
+Step 4 shows the new user, a list of popular users on dSocial (those with the highest follower count) allowing a user to choose who they they want to follow out of the list. For each follow, a [follow](#follow) action is generated. All of them are packaged into a single unsigned transaction and placed into the ```onboarding transaction queue``` and the onboarding process continues to Step 5.
+
+##### Step 5: Create First Post
+A user is asked to create their first post which creates a [post](#post) action. This is packaged into a single unsigned transaction and placed into the ```onboarding transaction queue```. 
+
+##### The Onboarding Transaction Queue
+All transactions from the onboarding process are concurrently sent to PeepsID, signed in the SKV and sent back to dSocial as signed transactions, where dSocial subsequently broadcasts them to the Arisen network. After broadcast, the user is taken to the home screen.
