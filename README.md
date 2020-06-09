@@ -795,3 +795,193 @@ The form contains the following:
 - Report Type (General or Emergency)
 - Report Category (Illegal Pornography or Other Criminal Activity)
 - ([IF] Emergency) Text box for a max 140 character description about why an issue is an emergency.
+
+### Profile Page
+Like the [Feed](#feed) component, the ```Profile Page``` component is made up of many sub-components. On desktop devices, the profile page component has a [Header Image Component](#header-image-component) that covers the entire width of the profile page and two columns exist beneath it (30%W/70%W)
+
+The left column is made up of the [Profile Info Component](#profile-info-component), while the right column is made up of the [Profile Feed Component](#profile-feed-component). On mobile devices this is all shrunk down into a single column, like so:
+
+```
+==========================
+   Header Image Component
+==========================
+     Profile Info Component
+==========================
+ Profile Statistics Component
+==========================
+
+     Profile Feed Component
+
+==========================
+```
+
+#### Header Image Component
+The header image component is designed to retrieve the dDrive discovery key for a user's header image from the Arisen blockchain and then fetches it from those who are seeding it. The header image component also has a "Change Header Image" button that is only shown to the end-user a profile belongs to. This launches a popup module that allows a user to update their header image via the [himage](#himage) action, where a new dDrive is created for the header image and broadcasted to dWeb's dDNS system and other DHT-based networks so that the new header image can be fetched by dSocial users.
+
+##### Profile Statistics Component
+The profile statistics component is nested within the [Header Image Component](#header-image-component) and is responsible for displaying:
+- the follower count
+- the following count
+- the post count
+- total RIX earnings
+- total reposts
+
+All of this data is retrieved from Arisen's blockchain.
+
+##### Profile Menu Component
+The profile menu component is nested at the bottom right of the [Header Image Component](#header-image-component) and contains the following options:
+- Block or Unblock User
+- Direct Message @username
+- Share Profile Link
+
+##### Follow Button Component
+To the left of the [Profile Menu Component](#profile-menu-component) is the follow button component which shows an "Unfollow" button to the end-users who are already following a particular profile or a "follow" button to the end-users who are not following a particular user.
+
+#### Profile Info Component
+The profile info component is responsible for identifying who a profile belongs to as well as some information about the profile.
+
+The profile info component includes the following elements:
+- The profile name
+- The profile username
+- The profile image
+- The profile description
+- The profile URL
+
+It also helps style a user's profile by injecting a user's preferred ```Profile Color``` into the page's CSS. Most data, including the RGB-based Hex code for a user's profile styling is stored on Arisen's blockchain. The profile image on the other hand is distributed across peers on the dWeb who are seeding it (typically those who are viewers of the profile).
+
+#### Profile Feed Component
+The profile feed component is made up of many instances of  [The Post Component](#the-post-component), a [Timeline Component](#timeline-component) and the [Pinned Post Component](#pinned-post-component). We won't cover the post component in this section since it was covered in the description of the [Feed Component](#feed) but will instead cover the two key parts of the profile feed component.
+
+##### Timeline Component 
+The timeline component is placed on the side of the profile feed area, allowing end-users to browse a profile's posts on a year-by-year basis.
+
+##### Pinned Post Component
+When an end-user "pins" a post on their profile, the pinned post component appears above all post components in the feed by design. Only one post can be pinned at a time via the [pin](#pin) action. A newly pinned post replaces the previously pinned post. Data pertaining to which post on a particular profile is being pinned by the profile's creator, is stored on Arisen's blockchain.
+
+### Direct Messages
+dSocial does not have an internal messaging system, instead it utilizes a separate application known as [dMessenger](#the-dmessenger-application) so that encrypted off-chain conversations can take place between users. This is because conversations stored via Arisen's blockchain would in-essence be public conversations and doing so would be expensive on the user, considering the resources needed to store all of these conversations would add up quickly. In order to have private, encrypted and peer-to-peer conversations, a separate cont ract and applicataion was needed. It also makes for a much smoother user experience, something Facebook has also experienced with their Messenger application. dSocial and dMessenger are highly integrated with each other, just as dSocial is highly integrated with PeepsID. dMessenger is also integrated with PeepsID for user authentication, as well as [dAppDB](https://github.com/distributedweb/dappdb-whitepaper) for distributed, off-chain message storage.
+
+#### The dMessenger Application
+The dMessenger application is a peer-to-peer messaging application for private, encrypted conversations. The dMessenger application will be available for Web, MacOS, Windows, Linux, iOS and Android. dSocial and dMessenger communicate over dMessenger's API to help faciliate the conversations between users. 
+
+Within dMessenger, users can see a list of all of their encrypted and unencrypted conversations that have been previously initiated via dMessenger's main screen. Users also have the option to initiate a new conversation with any dSocial user or anyone who has a PeepsID for that matter, by simply selecting whether a conversation is direct (unencrypted) or private (encrypted) and the account they're looking to start a conversation with. The account form box uses an autocomplete system to help users find the right PeepsID, which ultimately displays a user's profile image (from dSocial), right next to their account name, in order to improve the user experience and create a cleaner user interface (UI).
+
+When a user selects an already existant conversation or successfully initiates a new conversation, they're taken to the ```Single Conversation View```. Users can also exchange RIX and LIKE coins with each other during a conversation. Individual messages, as well as entire conversations can be deleted at anytime.
+
+The dMessenger application will be integrated into many Peeps applications in the future, so that other apps can utilize dMessenger as a messaging platform.
+
+#### Encrypted Conversations
+dMessenger allows for encrypted conversations between users through the utilization of dWeb's off-chain protocols and services, as well as dMessenger's DHT network, made up of all the devices that install the dMessenger application. Encrypted conversations are only available on the device that a conversation was "initiated on" and "accepted on" and messages are not stored on the Arisen network in any way. On the other hand, when initiating an encrypted conversation, the ```startp``` action is initiated by the user initiating a private conversation, which is designed to notify the receiving user on all devices where dMessenger is installed, that the initiating account intends to start an encrypted conversation. The ```initp``` action uses the ```location``` parameter as a way of allowing a peer to send its node location on dMessenger's DHT, so that the two users can exchange data off-chain for the rest of the exchange. Once both users find each other over the DHT, each of them are able to agree on the creation of a dDrive and exchange its discovery key, where the actual conversation will be stored within a distributed database framework known as [dAppDB](https://github.com/dwebjs/dappdb).
+
+Since only those within a conversation know the discovery key, only they can find the dDrive and therefore read the conversation. Like a dDrive's files are stored in a binary format within a dDatabase, so are the data files that derive from dAppDB, so that they can be streamed between peers efficiently. 
+
+Like any conversation, it is only truly private as long as the users within the conversation keep it private. the users of a conversation must all agree to stop seeding a dDrive that holds the data related to a particular conversation for the data to be completely removed from the dWeb, although, since account data is not mentioned in the database files within the dDrive, it would be impossible to figure out who was apart of the original conversation, if the discovery keys were somehow discovered through a "brute-force" search (virtually impossible) or one of the users were to expose the discovery keys.
+
+### Followers
+The followers component/view shows the profile name, profile description and the profile image for every use who is following the user's profile. For each user in the follower layout, there is a "block" button for blocking a  particular follower.
+
+### Following
+The following layout shows the profile name, profile description and profile image for every user a particular user is following. For each user in the following layout, there is an "unfollow" button, which will initiate the [unfollow](#unfollow)  action and remove the unfollowed user from the user's following.
+
+### Wallet
+The wallet component allows a user to see their RIX and LIKE balances, transactions, earnings, a feature that allows the customized filtering of transactions and earnings, as well as a feature that allows dSocial to send RIX or LIKE to other accounts. dSocial is also integrated with the [dWallet Application](https://arisen.network/dwallet) just as it is integrated with dMessenger and PeepsID.
+
+#### Wallet Overview Component
+The dWallet component's initial screen  is the overview component, which shows the [Balance Component](#balance-component), [Recent Transactions Component](#recent-transaction-component) and the [Recent Earnings Component](#recent-earnings-component). There is also two buttons, one that says "Make Transfer" and another that says "Filter". On desktop devices, these components are split into two columns (40%W/60%W). On mobile, they are condensed down to a single column.
+
+When clicking "Make Transfer", a user is taken to the "Transfer page", which is made up of the [Transfer Component](#transfer-component) and when clicking "Filter", the user is taken to the "Filter" page, which is made up of the [Filter Component](#filter-component). All balance, transaction and earnings-related data within the overview component is retrieved from the Arisen blockchain.
+
+##### Balance Component
+The balance component is responsible for displaying an account's RIX and LIKE balances within the [Wallet Overview Component](#wallet-overview-component).
+
+##### Recent Transactions Component
+The recent transactions component is designed the show the last 12 RIX/LIKE-based transactions from an account. The following data about a transaction is shown:"
+
+- The abbreviated transaction ID.
+- Transaction time and date.
+- Who the transaction was sent to or received from.
+- How much RIX or LIKE was sent.
+
+A transaction ID can be clicked which forwards a user to the [Arisen Explorer](https://explorer.arisen.network) so the user can view more about the transaction itself.
+
+##### Recent Earnings Component
+The recent earnings component is designed to show the last 12 upvotes a user has received on dSocial. The following data is shown about a user's recent upvote history:
+
+- Upvote time and date
+- Upvoting account
+- Upvoting transaction ID
+- Upvoting post ID or comment ID
+- Upvoting total
+
+The transaction ID for an upvote can be clicked which forwards a user to the [Arisen Explorer](https://explorer.arisen.network) so the user can view more about a transaction. Similarly, the post ID related to an upvote can also be clicked, so that a user can go back and see which post an upvote is in relation to.
+
+#### Filter Component
+The filter component shows an entire earnings history for a user that can be filtered by several factors.
+
+- Date range
+- Upvoting account(s) (only show upvotes from specific accounts)
+- Upvote amount range 
+- Upvote location
+- Upvote asset type (RIX or LIKE)
+- Following/Follower Status (only shows upvotes from followers or following or both)
+- Upvoting user's following/follower amount ranges
+- Upvoting user's post count range (only shows upvotes from users with certain post counts)
+- By post ID or comment ID
+
+Users are able to view the following for each filtered result:
+- Upvote time and date
+- Upvoting account
+- Upvoting transaction ID
+- Upvoting post ID or comment ID
+- Upvoting total
+
+Reports can be generated from filtered results and can be exported to .XLS (Excel), .PDF or .CSV files. Reports can be printed from dSocial's web or desktop version.
+
+The transaction ID for an upvote can be clicked, which forwards a user to the Arisen Explorer, so the user can view more about the transaction. Similarly the post ID related to an upvote can also be clicked so a user can go back and see which post an upvote is in relation to.
+
+#### Transfer Component
+The transfer component simply allows a user to send RIX or LIKE to other dSocial users, by simply entering a user's @account, the asset type (RIX or LIKE) and the amount being sent. Users can optionally attach a "memo" to the transaction. The transfer component uses the ```transfer``` action related to the ```arisen.token``` contract.
+
+### Search
+The search component is a view that displays accounts and/or posts pertaining to a specific search term, trending term or #hashtag. It is simply a grouping of posts that utilize [The Post Component](#the-post-component), which obviously contain specific data related to a particular search.
+
+The search component uses an algorithm that ranks results using two factors.
+
+- a) Search results that have a greater word match count (for multi-word searches)
+- b) Results that have the highest average of reposts, interactions, comments and upvotes.
+
+For example, a search for the hashtag #SleepyJoe is simply a search for a single string, which means (a) isn't used. In this case results are ranked from those with the highest activity averages, down to those with the lowest activity averages. On the other hand, if a user searches for "Making America Great Again" and the following posts exist:
+
+- Post 1 - "We are **Making America Great**!" (3 matches)
+- Post 2 - "My trip to **America** was **great**" (2 matches)
+- Post 3 - "We're **Making America Great Again**" (4 matches)
+- Post 4 - "We're **Making America Great Again**" (4 matches)
+
+**Account for both a post's activity average and word matches:**
+- Post 1 has a 1,000 activity average and 3 matches
+- Post 2 has a 5,000 activity average and 2 matches
+- Post 3 has a 0 activity average and 4 matches
+- Post 4 has a 22 activity average and 4 matches
+
+The rankings for the search results would be as follows:
+1. Post 4
+2. Post 3
+3. Post 1
+4. Post 2
+
+Post 4 ranks first because it has a greater word match count than Post 1 and Post 2. Ever through Post 3 has a greater word match count, Post 4 has a higher activity average and therefore, dSocial's search algorithm will rank it ahead of Post 3.
+
+On another note, search results also display, at most, 3 accounts that may match search terms. For example, a user could have "Making America Great Again" in their profile description. 
+
+### Settings
+The settings component has many sub-components that allow users to:
+- Block or unblock specific users
+- Activate or deactivate their account
+- Delete an account
+- Select a default language
+- Logout settings (auto logouts)
+- Delete temporary data
+- Reserve .follow dTLD and point to profile
+- Logout of account
+
+
