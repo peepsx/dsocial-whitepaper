@@ -984,4 +984,125 @@ The settings component has many sub-components that allow users to:
 - Reserve .follow dTLD and point to profile
 - Logout of account
 
+## Application Features
+dSocial when compared to centralized social networks has many clear advantages including a better user experience, better security and privacy features, better performance for its users, a censorship-resistant platform and a way of actually economically benefiting its users to join and use the platform. More importantly, there is no central point of failure, users are in control of their own data, can police the platform themselves and don't have to worry about hackers or rogue users trying to gain access to their accounts.
 
+When compared with semi-decentralized social networks, dSocial operates with true end-to-end decentralization, features a decentralized reporting system for illicit activity and is built on a dApp development framework that will ultimately allow dSocial to operate a global scale. In the sub-sections that follow, I'm going to discuss many of the features which set the dSocial platform apart from any other social network in existence. 
+
+### Censorship Resistant
+Many centralized social networks claim to be "censorship resistant" because their founders and the companies that control the data produced by these applications claim that they'll never use their control to censor the users who curate data on these platforms. This is misleading because many outside tentacles exist that have a higher-level of control over these applications than the actual founders do. When Gab.com was taken offline, it wasn't due to actions of their ownership. It was because of the centralized company in charge of domain name administration for .com TLDs, who by-design, will always have control over the "gab.com" TLD, as well as the liberal hosting providers who jumped into "save the world" mode and subsequently shut down Gab.com's servers. While Gab and other networks like them should be recognized for their efforts to create a "safe space" for users wanting to voice their opinions, users of these applications should also be aware that these platforms cannot truly claim that they're censorship-resistant, since the entire platform can be taken offline at anytime.
+
+**Centralized social networks like Gab can be completely censored and taken offline in the following ways:**
+
+- The Internet Corporation for Assigned Names and Numbers (ICANN) administers the assignment of top-level names and addresses [STALL14] (like gab.com) through domain registrars that they approve, and at anytime ICANN or one of these centralized domain registrars can adjust their policies in order to seize a domain name. Rogue governments or judges looking to make a political statement (see Judge Ed Sullivan in US v. Flynn) also have the ability to order the seizure of domain names through ICANN or US-based domain registrars, which may point to websites that go against their political views or the views of their affiliates. 
+
+- Centralized hosting companies which operate within centralized data centers, are where the data related to these centralized social networks is stored, as well as the files related to the web application itself. Without these centralized hosting providers, there would be no way to access the website or web application. As was seen in the Gab.com debacle, hosting companies were identified by leftists and were subsequently pressured to cancel their hosting agreement with Gab.com. This forced Gab.com to find a new hosting provider. Like top-level domains, rogue political figures and governments can seize control of these servers and take the application files and data offline. 
+
+-  Hackers can organize attacks aimed at taking these platforms offline, taking temporary control of accounts and deleting or editing (censoring) specific content.
+
+- The owners of the application can have a change in views (see Drudge Report) and can all of a sudden elect to censor the views of their users, since they have central control over the data itself. This forces users to start their entire digital existence from scratch. In an age when businesses, personalities and regular everyday people store their entire digital existence on these networks, it's important that users are insured by an application's code that a sudden change in operation simply isn't possible without their say-so. With centralized social networks, this will never be possible.
+
+**dSocial lacks these central points of failure in the following ways:**
+
+- dSocial uses [Decentralized Network Addressing](#decentralized-network-addressing) including its own dTLD (decentralized domain name) that is not administered by anyone and uses the Arisen blockchain as a means for storing a dTLD's decentralized network records (discovery keys). dSocial can be accessed over the decentralized web via ```dweb://dsocial.dcom``` over the ```.dcom``` dTLD, if users prefer to use the dWeb version of dSocial.
+
+- dSocial's dWeb-based application files are stored within a dDrive and distributed amongst its users, rather than being hosted via "centralized server farms". dSocial's data is hosted across the nodes that makeup the Arisen blockchain, a decentralized and distributed system, while each post or comment's media files that are uploaded to the platform are packaged within their own individual dDrives and distributed and stored amongst the viewers of these posts.
+
+- Considering dSocial's application code is distributed in a dDrive, that means that it can only be edited by the original creator of the dDrive, who is also the holder of the private key related to the dDrive. The private key through Elliptic Curve Multiplication (one-way function) creates the dDrive's public key which is then used to generate the dDrive's discovery key, which is a "BLAKE2B" hash (one-way hash) of the public key [RICE19A]. A dDrive's discovery key is only discoverable to those who know it and those who know it can download or stream a dDrive where they'll then have access to the public key, which the discovery key is derived from. Although, the private key, which is needed to make the edits to the state of a dDrive, is never exposed and it is a well-established scientific fact, backed by a strong mathematical foundation, that the formula 
+
+```K = k * G``` 
+
+cannot be reversed [WOOD19, ANTO17, ECEN19]. In other words, the private key cannot possibly be calculated using just the public key.
+
+**NOTE:** In the above equation K is the public key, k is a randomly generated number in the form of a private key and G is a pre-determined generator point on the elliptic curve.
+
+With that said hackers would be unable to edit or exploit the application code within a dDrive without the private key. Also, even if the developers of the dSocial application (who does have the private key) were to edit this code, two things are for certain:
+
+1. The code is open source (all dDrive's are open source by nature) and can be forked (cloned) by other developers with a fresh set of keys. Since all of dSocial's data is openly available on Arisen's blockchain, the new clone would automatically pull all of dSocial's data and dSocial's users would be able to login and use the same system once again. Apps on the dWeb can be forked and re-launched within seconds using [dBrowser](https://dbrowser.com). 
+
+2. The application's key functions as discussed previously, are not within the application code covered in (1) above. Instead, these functions are stored and executed on the Arisen blockchain through [on-chain actions](#on-chain-actions). This could is also open source and every single execution of this code is open, validated and stored on Arisen as well. 
+
+While I can promise you that Peeps will never change its position as it applies to censorship, you don't have to take my word for it. Users of dSocial control their own data and the application is open to the community, so much so, if the community wants to overthrow the dSocial application, while keeping their data and accounts, they can do just that by launching an all-new version of the application, which will still use Arisen as its immutable data source. This way users retain their data and everything pertaining to their digital existence on dSocial, while a dSocial alternative (fork) is simply related to a new network address (a new dDrive with a new discovery key).
+
+This is possible because dSocial is built on a truly decentralized foundation where users are programmatically in control, not the developers, hosting companies, domain registrars or a bunch of abusive bureaucratic leaders who are controlled and incentivized by special interest groups who hate freedom. Therefore, dSocial is censorship-resistant.
+
+### A Social Economy
+dSocial is a building block in a decentralized economy we're trying to conceptualize at PeepsLabs. Although, that small building block ultimately brings to life a massive "social economy" where users earn for the content they curate, directly from those who like and appreciate it. Instead of companies like Facebook, Google and others who openly mine and sell their user's data [SCHE15], users of dSocial control and profit from their own data, rather than these greedy corporations.
+
+As more and more users utilize dSocial, RIX and LIKE will be freely distributed to more and more people. With that said, the more places a user can spend RIX, the more intrinsic value it will have. In other words, the more developers who build on the foundation dSocial is built upon (Arisen and dWeb), more and more systems will sprout up who accept RIX as a form of exchange giving its holders more and more places to spend it.  At Peeps alone, we're developing a decentralized alternative to Amazon known as dBuy, a decentralized alternative to UBER known as dRide and a decentralized alternative to Expedia known as dTrips, just to name a few. We have to start somewhere though and dSocial allows us to "spread the wealth" openly and honestly around the world, so that other building blocks can serve just as powerful of a purpose as dSocial does.
+
+**NOTE:** In the coming weeks we're launching an account reservation system for dSocial where users can download PeepsID, reserve their username (@account) and our signup system will automatically send them 1,000 RIX for signing up. The user can then download dWallet to manage their RIX coins, as well as dBrowser, so they can begin moving their own websites and apps over to the dWeb.
+
+### Self-Policing
+As discussed in [Decentralized Reporting System](#decentralized-reporting-system) users are able to police the network through the dReport system, which ultimately utilizes Arisen's elected and decentralized governance to remove illegal content. In essence, dSocial is built on top of a digital Meritocratic Republic, where the people elect the best possible community members and delegate their powers to these elected individuals. Those powers include their ability to freeze accounts, modify data on the blockchain and reverse illegal activity through a 15/21 vote. This allows (1) users to identify illegal activity or content; (2) report the activity or content; (3) allowing the community to vote on the removal of the activity or content as well as the accounts taking part in this activity; (4) an elected governance to remove the content or activity from Arisen, which as a consequence of this action, removes the activity or content from the apps where it was taking place or being displayed. Ultimately, dSocial sets out to prove that its users are perfectly capable of policing their own online communities, as long as the proper, truly decentralized facilities are in place for them to do so.
+
+### Completely Server-less
+As I believe I have thoroughly explained in this paper, dSocial is completely server-less. In other words, its application code (application files and smart contracts) as well as its data and media are distributed amongst those who consume them. This also insures that dSocial is truly decentralized from end-to-end.
+
+### DDOS and Hacker-Resistant
+Since dSocial's web-based application files within a dDrive or its pre-compiled applications are downloaded directly to a user's device, their functionality takes place on the end-user's local computer, which eliminates the DDOS threat to the application itself. While some of the application's code is stored externally on Arisen's blockchain and blockchain networks can be the target of sophisticated DOS-style attacks, these type of DOS attacks will have very little effect on the dSocial application, since it is capable of utilizing a "transaction queue" for broadcasting transactions to Arisen in the event the network is slowed by a DOS attack.
+
+If an individual Arisen node on the Arisen network is hacked, this is more than likely not due to the Arisen software. It is more than likely due to the fact that an Arisen node was improperly secured. Anyway, it wouldn't matter if a node, even a block producer node, was compromised. This is because a consensus of 15/21 block producers are needed to make changes to on-chain code (smart contracts). Also, a hacker would be unable to affect the operations of the network, nor could they halt any of the network's smart contracts. The only thing a hacker exploiting an individual Arisen node could do, is steal the private keys (would be difficult if they tried but still possible) of the user running the improperly secured node. If a hacker attempts to propagate fake transactions to other nodes actively participating on the Arisen network, nodes will notice these transactions are fake, will block the node sending out these fake transactions and they will never be validated or stored on the network's ledger. To be able to track the origins of transactions, or interfere with propagation, an attacker would have to control a significant percentage of Arisen's nodes and at least 15 of the 21 block producer positions. Simply put, it will never happen and if it did, the community would immediately vote out this sort of attack and replace with new block producers.
+
+As far as peers that share the dSocial applications amongst each other via the dWeb, it is important to understand that files being shared can only be edited by the creator of the dDrive and that those downloading a dDrive from peers on the dWeb are downloading a binary representation of the files and not the actual files themselves. A peer is only broadcasting this binary data in the form of a dDatabase, which in-turn makes up the "file system" of the dDrive, which is then fragmented across the peers that share it (seeders), to those who request to download or stream the dDrive hosting dSocial's application files (a user attempts to access dweb://dsocial.dcom via dBrowser).
+
+We have also implemented a number of Kademilia extensions to enable a secure key-based routing protocol. Kademilia also protects against the only known attacks against distributed systems, specifically:
+
+- Sybil Attacks - Where a user generates an extreme number of arbitrary identities (Node IDs) to flood the network.
+- Eclipse Attacks - Where an attacker attempts to isolate a node or set of nodes in the network graph by insuring that all outbound connections reach malicious nodes.
+
+While the decentralized web (dWeb) is not perfect, it is a much better, safer alternative to the Web, nor is it riddled with the issues you see with the centralized web. By putting users in control, by-design, rather than centralized tech companies, it should come as no surprise that the dWeb network and the applications built on top of it are much more secure when compared with the centralized web and the applications built on top of it. As a result, dSocial is much more secure than centralized applications like Facebook and Twitter. 
+
+#### Secure Key Vault
+As we discussed in [Secure SKV Communications](#secure-skv-communications), dSocial utilizes a unique user authentication process that makes it virtually impossible for hackers to gain access to a user's account. Although, if this was to happen, exploited accounts can be frozen by Arisen's governance, new keys subsequently generated via PeepsID and the old keys replaced so that the account is secure once again. The only way accounts can be hacked, is if users fail to secure their cryptographic keys properly by refusing to use PeepsId. That's why we made it impossible for users to use dSocial without PeepsID and its use of a secure key vault.
+
+### Cross-Platform
+dSocial is available on all popular operating systems (MacOS, Windows, Linux, iOS and Android). dSocial's code will soon be open sourced via the [Peeps GitHub](https://github.com/peepsx). As mentioned earlier in this paper, we're currently developing the world's first decentralized operating system as well, where dSocial will be natively available.
+
+### True Privacy
+The centralized web overwhelms its users with the illusion that surveillance and freedom are compatible. As Robert Scheer puts it - 
+
+"Combine the constant intrusion into your physical movement with the interior movement of your mind, as is revealed (again, routinely and with little controversy) by more than a billion Facebook users - photos of friends that can be biometrically scanned and compared with other data on them, chats and every other confession of thoughts, doubts and fears documented for others, including, of course, your government to read and exploit. Then, further expand that database to include all of the apps and avenues of data collections, merged with the massively powerful data-mining capabilities of digital surveillance, which not only encompasses activity on desktops and phones but can also include every movement in the home and in the outside world. Welcome to the brave new world - a wired panopticon that even Huxley couldn't have imagined."
+
+dSocial's users do not have to worry about their data being sold or dSocial's application secretly following or recording their movements either. While Peeps is the developers of dSocial, the difference between Peeps and a company like Facebook is how they make money. Facebook, as well as other companies like Google race to accumulate apps with large user bases because they want to expand their vast troves of data that they ultimately package to advertisers, because advertisers expect results to accurately depict who will more than likely purchase the products and services of their advertisers [SCHE15].
+
+Peeps on the other hand, takes 5% of all the upvotes on the dSocial platform to help pay for development and marketing. This is a far cry from selling user information through an integrated advertising platform, while exploiting the privacy of the platform's users. That doesn't mean that advertising is bad. Peeps is also building a decentralized advertising platform called dAdvertising, that users have to opt-in to, allowing advertisers to promote their products and services within their dSocial experience. In-turn dAdvertising will spread those earnings across the network's users, while chunking Peeps 5% of the overall earnings to further the development of the dAdvertising platform as well. 
+
+In short, we make money when users use our platform and we earn from that usage without actually charging a single dime to those who use it. In other words, we don't have to exploit anyone and we never will. We'll make much more money doing right by our users and using the various technologies dSocial is built upon, ethically, unlike dSocial's centralized competitors.
+
+### User-Controlled Data
+Users truly control their data on dSocial, where they can easily:
+- Hide posts from public viewing
+- Block or unblock specific accounts
+- Delete specific posts or an entire profile
+- Temporarily deactivate a profile, where it is no longer viewable by users
+- Store their own passwords, thereby self-securing their account rather than trusting a centralized company with such sensitive information, they can trust themselves.
+
+While most centralized platforms allow some of these features, it should be known that data is never "truly" deleted from the servers of these providers. By allowing users to control their data and collectively operate the network, the environment is, by no coincidence, much safer for the user's themselves.
+
+## Conclusion
+dSocial clearly provides a truly decentralized alternative to centralized social networks like Twitter, featuring drastically better performance and security thanks to its use of various distributed systems and consumer-friendly, blockchain-based user authentication protocols, which in-turn creates a powerful user experience. More importantly, dSocial is controlled and policed by the community at-large, rather than politically motivated corporations, where its censorship-resistant platform is used to empower its users, instead of being used to exploit and abuse them. Lastly, dSocial gives birth to a decentralized social economy where users not only control their own data, but also financially earn for the data they curate.
+
+In closing, dSocial and applications like it will form a web that embodies freedom, promotes patriotism and one that embraces the ideology that the web must be a place for free thought, as well as open, ethical innovation where the advantages and protections it provides to its users are no longer a misleading advertisement by tech companies. Instead, those freedoms are hard coded into the very foundation of a web, that apps like dSocial are built on - a foundation that will soon give away to a decentralized software revolution.
+
+### Dedication
+I dedicate this paper to my two sons, Jared Jr. and Hayden Wright.
+
+## References
+- **[ANTO17]** Antonopoulous, A. ***Mastering Bitcoin.*** Beijing: O'Reilly, June 2017
+- **[BAMB20]** Bamboo. https://bamboo-dht.org
+- **[CODE20]** Codeen. https://codeen.cs.princeton.edu
+- **[DECA07]** DeCandia, G.; Hastorun, D.; Jampani, M; Kakulapati, G.; Lakshman, A; Pilchin, A.; Silvasubramanian, S.; Vosshall, P; and Vogels, W. ***Dynamo: Amazon's highly available key-value store.*** in ***Proceedings Of Twenty-First ACM SIGOPS Symposium On Operating System Principles, 2007.***
+- **[ECEN19]** Ecendance, J. ***Developer and Entrepreneur Guide To EOS Blockchain*** England: Proveneum, February, 2019.
+- **[GNUN20]** Gnunet. ***Gnu framework for secure peer-to-peer networking*** https://gnunet.org
+- **[GRIF10]** Griffin, E. ***The Creature From Jekyll Island: A Second Look At The Federal Reserve*** California: American Media, September 2010.
+- **[HAZE20]** Hazelcast. https://hazelcast.com
+- **[IBM20]** IBM. ***Scalable, Integrated Solutions For Elastic Caching Using IBM WebSphere eXtreme Scale.*** Redbooks, 2020.
+- **[LAKS10]** Lakshman, A.; Malik, P. ***Cassandra: A Decentralized Storage Structured System.*** in ***ACM SIGOPS Operating Systems Review, 44:35-40***, April 2010.
+- **[LITW96]** Litwin, W; Neimat, M; Scneider, A. ***Lh - A Scalable, Distributed Data Structure*** in ***ACM Transactions On Database Systems, Volume 21***, December 1996.
+- **[RICE19A]** Rice, J. ***dWeb - Distributed Web Protocol*** https://github.com/distributedweb/whitepaper, October 2019.
+- **[RICE19B]** Rice, J. ***dDatabase Whitepaper*** https://github.com/distributedweb/ddatabase-whitepaper, November, 2019. 
+- **[SCHE15]** Scheer, R. ***They Know Everything About You: How Data Collecting Corporations and Snooping Government Agencies Are Destroying Democracy*** New York: Nation Books, 2015.
+- **[SHI09]** Shi, G.; Chen, J; Gong, G.; Fan, L.; Xue, H.; Lu, Q; Liang, L. ***A DHT Key-Value Storage System With Carrier Grade Performance*** in ***Euro-Par 2009 Parallel Processing, Volume 5704***, 2009.
+- **[STALL14]** Stallings, W. ***Data and Computer Communications, Tenth Edition*** Upper Saddle River, NJ: Prentice Hall, 2014.
+- **[WOOD19]** Wood, G ***Mastering Ethereum*** Beijing: O'Reilly, December, 2018.
