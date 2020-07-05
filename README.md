@@ -563,7 +563,7 @@ The ```pdata``` action is used to add or modify an account's profile data. The `
 ## Application Layout
 This section briefly describes some of the "components" and "views" of the dSocial application. dSocial's application layout is the same (responsive) across all devices so that the user experience is seamless when switching between desktop and mobile devices. dSocial is written in ReactJS and uses React-Native, as well as Electron so that a single code base can be deployed across multiple platforms (Web, MacOS, Windows, Linux, iOS and Android). dSocial is a SPA (single page application) made up of many components that are combined to make up more complex components. These components are explained in the sub-sections that follow.
 
-### Account Creation & Login
+## Account Creation & Login
 As discussed in [Cross-Platform UAL](#cross-platform-ual), the UAL used by dSocial is the most important element of the application itself. Before an end-user can actually use dSocial, the application itself requires that an end-user downloads the PeepsID app so that the cryptographic keys (for various permission levels, that are generated during both the login and signup processes) are securely stored within the PeepsID application. This insures that all keys that generated during the login and signup processes, are securely stored within the PeepsID app. This also insures that end-users can securely use these keys to sign the transactions related to any of the [on-chain actions](#on-chain-actions) they end up initiating while using dSocial.
 
 #### No-Show Policy (NSP)
