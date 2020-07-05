@@ -71,7 +71,7 @@ dSocial represents the software of the future, one where freedom is a catalyst a
 - [A Social Economy](#a-social-economy)
 - [Self-Policing](#self-policing)
 - [Completely Server-less](#completely-server-less)
-- [DDOS & Hacker Resistant](#ddos-hacker-resistant)
+- [DDOS & Hacker Resistant](#dDOS-and-hacker-resistant)
 - [Cross-Platform](#cross-platform)
 - [True Privacy](#true-privacy)
 - [User-Controlled Data](#user-controlled-data)
