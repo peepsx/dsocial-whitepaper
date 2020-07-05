@@ -38,7 +38,7 @@ dSocial represents the software of the future, one where freedom is a catalyst a
 - [Decentralized Reporting System](#decentralized-reporting-system)
 - [Decentralized Network Addressing](#decentralized-network-addressing)
 - [The dSocial dTLD](#the-dsocial-dtld)
-- [Built-In Decentralized Cryptocurrency Banking System](#built-in-decentralized-cryptocurrency-banking-system)
+- [Built-In Decentralized Cryptocurrency Banking System](#Built-In Decentralized Cryptocurrency Bank)
 - [On-Chain Actions](#on-chain-actions)
 - [post](#post)
 - [comment](#comment)
