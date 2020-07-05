@@ -39,7 +39,7 @@ dSocial represents the software of the future, one where freedom is a catalyst a
 - [Decentralized Network Addressing](#decentralized-network-addressing)
 - [The dSocial dTLD](#the-dsocial-dtld)
 - [Built-In Decentralized Cryptocurrency Banking System](#built-in-decentralized-cryptocurrency-banking-system)
-[On-Chain Actions](#on-chain-actions)
+- [On-Chain Actions](#on-chain-actions)
 - [post](#post)
 - [comment](#comment)
 - [repost](#repost)
@@ -57,7 +57,7 @@ dSocial represents the software of the future, one where freedom is a catalyst a
 - [system](#system)
 - [delete](#delete)
 - [deactivate](#deactivate)
-[Application Layout](#application-layout)
+- [Application Layout](#application-layout)
 - [Account Creation & Login](#account-creation-login)
 - [Feed](#feed)
 - [Profile Page](#profile-page)
@@ -66,7 +66,7 @@ dSocial represents the software of the future, one where freedom is a catalyst a
 - [Following](#following)
 - [Media](#media)
 - [Wallet](#wallet)
-[Application Features](#application-features)
+- [Application Features](#application-features)
 - [Censorship-Resistant](#censorship-resistant)
 - [A Social Economy](#a-social-economy)
 - [Self-Policing](#self-policing)
@@ -75,7 +75,7 @@ dSocial represents the software of the future, one where freedom is a catalyst a
 - [Cross-Platform](#cross-platform)
 - [True Privacy](#true-privacy)
 - [User-Controlled Data](#user-controlled-data)
-[Conclusion](#conclusion)
+- [Conclusion](#conclusion)
 
 ## Introduction
 **NOTE:** A programmer who copies the work of another is called a **forker** and one who takes from the works of ***many*** in order to develop something entirely different, is known as an **inventor**. I say all of that to say that our team is deeply indebted to the inventors who invented many of the individual components that make up the decentralized software development framework we've invented. It is that framework that has allowed us to develop applications like dSocial and we are eternally grateful for their passion and hard work. Without them, this project simply wouldn't be possible.
