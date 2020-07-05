@@ -58,7 +58,7 @@ dSocial represents the software of the future, one where freedom is a catalyst a
 - [delete](#delete)
 - [deactivate](#deactivate)
 - [Application Layout](#application-layout)
-- [Account Creation & Login](#account-creation-&-login)
+- [Account Creation & Login](#application-layout)
 - [Feed](#feed)
 - [Profile Page](#profile-page)
 - [Direct Messages](#direct-messages)
